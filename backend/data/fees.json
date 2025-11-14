@@ -1,0 +1,68 @@
+[
+  {
+    "courseId": 1,
+    "courseName": "Computer Science (B.Tech)",
+    "universityId": 1,
+    "tuitionFee": "$55,000",
+    "applicationFee": "$100",
+    "otherFees": "$5,000",
+    "totalPerYear": "$60,000",
+    "totalProgram": "$240,000",
+    "scholarships": "Available (Merit-based & Need-based)"
+  },
+  {
+    "courseId": 2,
+    "courseName": "Business Administration (MBA)",
+    "universityId": 1,
+    "tuitionFee": "$74,000",
+    "applicationFee": "$150",
+    "otherFees": "$6,000",
+    "totalPerYear": "$80,000",
+    "totalProgram": "$160,000",
+    "scholarships": "Available (Merit-based)"
+  },
+  {
+    "courseId": 3,
+    "courseName": "Electrical Engineering (B.Tech)",
+    "universityId": 1,
+    "tuitionFee": "$53,000",
+    "applicationFee": "$100",
+    "otherFees": "$5,000",
+    "totalPerYear": "$58,000",
+    "totalProgram": "$232,000",
+    "scholarships": "Available"
+  },
+  {
+    "courseId": 4,
+    "courseName": "Computer Science (B.Tech)",
+    "universityId": 2,
+    "tuitionFee": "$53,790",
+    "applicationFee": "$75",
+    "otherFees": "$4,500",
+    "totalPerYear": "$58,290",
+    "totalProgram": "$233,160",
+    "scholarships": "Need-based aid available"
+  },
+  {
+    "courseId": 5,
+    "courseName": "Mechanical Engineering (B.Tech)",
+    "universityId": 2,
+    "tuitionFee": "$53,790",
+    "applicationFee": "$75",
+    "otherFees": "$4,500",
+    "totalPerYear": "$58,290",
+    "totalProgram": "$233,160",
+    "scholarships": "Available"
+  },
+  {
+    "courseId": 6,
+    "courseName": "Data Science (M.Tech)",
+    "universityId": 2,
+    "tuitionFee": "$55,000",
+    "applicationFee": "$90",
+    "otherFees": "$5,000",
+    "totalPerYear": "$60,000",
+    "totalProgram": "$120,000",
+    "scholarships": "Research assistantships available"
+  }
+]

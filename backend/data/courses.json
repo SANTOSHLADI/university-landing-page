@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "universityId": 1,
+    "name": "Computer Science",
+    "degree": "B.Tech",
+    "duration": "4 years",
+    "eligibility": "12th with Math & Physics"
+  },
+  {
+    "id": 2,
+    "universityId": 1,
+    "name": "Business Administration",
+    "degree": "MBA",
+    "duration": "2 years",
+    "eligibility": "Bachelor's degree"
+  },
+  {
+    "id": 3,
+    "universityId": 1,
+    "name": "Electrical Engineering",
+    "degree": "B.Tech",
+    "duration": "4 years",
+    "eligibility": "12th with Math & Physics"
+  },
+  {
+    "id": 4,
+    "universityId": 2,
+    "name": "Computer Science",
+    "degree": "B.Tech",
+    "duration": "4 years",
+    "eligibility": "12th with Math & Physics"
+  },
+  {
+    "id": 5,
+    "universityId": 2,
+    "name": "Mechanical Engineering",
+    "degree": "B.Tech",
+    "duration": "4 years",
+    "eligibility": "12th with Math & Physics"
+  },
+  {
+    "id": 6,
+    "universityId": 2,
+    "name": "Data Science",
+    "degree": "M.Tech",
+    "duration": "2 years",
+    "eligibility": "B.Tech in CS/IT"
+  }
+]

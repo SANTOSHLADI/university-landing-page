@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "name": "Stanford University",
+    "location": "Stanford, California",
+    "established": 1885,
+    "type": "Private",
+    "ranking": 3,
+    "overview": "Stanford University is a leading research university known for its entrepreneurial character and proximity to Silicon Valley.",
+    "facilities": [
+      "World-class libraries",
+      "State-of-the-art laboratories",
+      "Sports complexes",
+      "Student housing",
+      "Medical facilities"
+    ],
+    "placements": {
+      "averagePackage": "$125,000",
+      "highestPackage": "$250,000",
+      "placementRate": "95%",
+      "topRecruiters": ["Google", "Apple", "Microsoft", "Tesla", "Amazon"]
+    }
+  },
+  {
+    "id": 2,
+    "name": "MIT (Massachusetts Institute of Technology)",
+    "location": "Cambridge, Massachusetts",
+    "established": 1861,
+    "type": "Private",
+    "ranking": 1,
+    "overview": "MIT is a world-renowned institution focused on science, technology, and research innovation.",
+    "facilities": [
+      "Advanced research centers",
+      "Innovation labs",
+      "Student recreation center",
+      "Libraries and archives",
+      "Health services"
+    ],
+    "placements": {
+      "averagePackage": "$130,000",
+      "highestPackage": "$280,000",
+      "placementRate": "97%",
+      "topRecruiters": ["Google", "SpaceX", "McKinsey", "Goldman Sachs", "Facebook"]
+    }
+  }
+]

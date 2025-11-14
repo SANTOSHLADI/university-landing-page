@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT - Massachusetts Institute of Technology</title>
+    <meta name="description" content="Explore MIT programs, fees, placements, and apply now!">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 0;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <h1 class="text-3xl md:text-4xl font-bold">MIT</h1>
+            <p class="text-gray-300 mt-2">Massachusetts Institute of Technology</p>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-gray-50 to-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="fade-in">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to MIT</h2>
+                    <p class="text-lg text-gray-600 mb-6" id="university-overview">
+                        Loading university information...
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="openFeesModal()" class="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold transition">
+                            Check Course Fees
+                        </button>
+                        <button onclick="scrollToForm()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                            Apply Now
+                        </button>
+                        <button onclick="downloadBrochure()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                            Download Brochure
+                        </button>
+                    </div>
+                </div>
+                <div class="fade-in">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800" alt="MIT Campus" class="rounded-lg shadow-xl w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Courses Offered</h2>
+            <div id="courses-container" class="grid md:grid-cols-3 gap-6">
+                <div class="text-center text-gray-500">Loading courses...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Placements Section -->
+    <section class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Placements</h2>
+            <div id="placements-container" class="grid md:grid-cols-4 gap-6">
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Campus Facilities</h2>
+            <div id="facilities-container" class="grid md:grid-cols-3 gap-6">
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Form Section -->
+    <section id="apply-section" class="py-16 bg-gradient-to-br from-gray-50 to-white">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Apply Now</h2>
+            
+            <form id="leadForm" class="bg-white p-8 rounded-xl shadow-lg">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Full Name *</label>
+                        <input type="text" name="name" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Email *</label>
+                        <input type="email" name="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Phone Number *</label>
+                        <input type="tel" name="phone" required pattern="[0-9]{10}" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">State *</label>
+                        <select name="state" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <option value="">Select State</option>
+                            <option value="Massachusetts">Massachusetts</option>
+                            <option value="California">California</option>
+                            <option value="New York">New York</option>
+                            <option value="Texas">Texas</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Course Interest *</label>
+                        <select name="course" id="course-select" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <option value="">Select Course</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Intake Year *</label>
+                        <select name="intakeYear" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <option value="">Select Year</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="consent" required class="mr-2">
+                        <span class="text-sm text-gray-600">I agree to receive information and updates from MIT *</span>
+                    </label>
+                </div>
+                
+                <button type="submit" id="submitBtn"
+                        class="w-full mt-6 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Submit Application
+                </button>
+                
+                <div id="formMessage" class="mt-4 text-center hidden"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 MIT. All rights reserved.</p>
+            <p class="text-gray-400 mt-2">Built with ❤️ for student admissions</p>
+        </div>
+    </footer>
+
+    <!-- Fees Modal -->
+    <div id="feesModal" class="modal">
+        <div class="modal-content">
+            <div class="bg-gradient-to-r from-gray-700 to-gray-800 text-white p-6 rounded-t-xl">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-bold">Course Fees</h3>
+                    <button onclick="closeFeesModal()" class="text-white hover:text-gray-200 text-3xl">&times;</button>
+                </div>
+            </div>
+            <div id="fees-content" class="p-6">
+                <p class="text-center text-gray-500">Loading fees...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files (same files, just change UNIVERSITY_ID) -->
+    <script>
+        // API Base URL
+        const API_BASE_URL = 'http://localhost:3000/api';
+        const UNIVERSITY_ID = 2; // MIT
+        
+        // Include all the same functions from api-service.js, modal-handler.js, and form-handler.js
+        // For brevity, you can copy the exact same code and just change UNIVERSITY_ID
+    </script>
+    
+    <!-- Include the same JavaScript files with UNIVERSITY_ID = 2 -->
+    <script src="../university1/js/api-service.js"></script>
+    <script src="../university1/js/modal-handler.js"></script>
+    <script src="../university1/js/form-handler.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUniversityData();
+            loadCourses();
+        });
+        
+        function scrollToForm() {
+            document.getElementById('apply-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function downloadBrochure() {
+            alert('Brochure download feature coming soon!');
+        }
+    </script>
+</body>
+</html>
