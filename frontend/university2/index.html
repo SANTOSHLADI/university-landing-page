@@ -224,27 +224,335 @@
         </div>
     </div>
 
-    <!-- JavaScript Files (same files, just change UNIVERSITY_ID) -->
+    <!-- ALL JAVASCRIPT CODE INLINE FOR MIT -->
     <script>
-        // API Base URL
+        // ========== API SERVICE ==========
         const API_BASE_URL = 'http://localhost:3000/api';
         const UNIVERSITY_ID = 2; // MIT
-        
-        // Include all the same functions from api-service.js, modal-handler.js, and form-handler.js
-        // For brevity, you can copy the exact same code and just change UNIVERSITY_ID
-    </script>
-    
-    <!-- Include the same JavaScript files with UNIVERSITY_ID = 2 -->
-    <script src="../university1/js/api-service.js"></script>
-    <script src="../university1/js/modal-handler.js"></script>
-    <script src="../university1/js/form-handler.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUniversityData();
-            loadCourses();
+         const PIPEDREAM_URL = 'https://035530e0082957b389884fed33d98a92.m.pipedream.net'; // Replace with your actual URL
+
+        // Fetch university data
+        async function fetchUniversity() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/university/${UNIVERSITY_ID}`);
+                if (!response.ok) throw new Error('Failed to fetch university data');
+                const data = await response.json();
+                return data.data;
+            } catch (error) {
+                console.error('Error fetching university:', error);
+                return null;
+            }
+        }
+
+        // Fetch courses
+        async function fetchCourses() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/courses/${UNIVERSITY_ID}`);
+                if (!response.ok) throw new Error('Failed to fetch courses');
+                const data = await response.json();
+                return data.data;
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+                return [];
+            }
+        }
+
+        // Fetch fees by course ID
+        async function fetchFees(courseId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/fees/${courseId}`);
+                if (!response.ok) throw new Error('Failed to fetch fees');
+                const data = await response.json();
+                return data.data;
+            } catch (error) {
+                console.error('Error fetching fees:', error);
+                return null;
+            }
+        }
+
+        // Submit form to Pipedream
+        async function submitFormToPipedream(formData) {
+            try {
+                const response = await fetch(PIPEDREAM_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) throw new Error('Failed to submit form');
+                return { success: true };
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // ========== MODAL HANDLER ==========
+        let currentCourses = [];
+
+        // Open fees modal
+        async function openFeesModal() {
+            const modal = document.getElementById('feesModal');
+            const content = document.getElementById('fees-content');
+            
+            modal.classList.add('active');
+            content.innerHTML = '<p class="text-center text-gray-500">Loading courses...</p>';
+            
+            // Load courses if not already loaded
+            if (currentCourses.length === 0) {
+                currentCourses = await fetchCourses();
+            }
+            
+            if (currentCourses.length === 0) {
+                content.innerHTML = '<p class="text-center text-red-500">Failed to load courses</p>';
+                return;
+            }
+            
+            // Display course selection
+            content.innerHTML = `
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Select a Course to View Fees:</label>
+                    <select id="course-fee-select" onchange="loadCourseFees(this.value)" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                        <option value="">-- Select Course --</option>
+                        ${currentCourses.map(course => 
+                            `<option value="${course.id}">${course.name} (${course.degree})</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                <div id="fee-details" class="mt-4"></div>
+            `;
+        }
+
+        // Close fees modal
+        function closeFeesModal() {
+            const modal = document.getElementById('feesModal');
+            modal.classList.remove('active');
+        }
+
+        // Load course fees
+        async function loadCourseFees(courseId) {
+            const feeDetails = document.getElementById('fee-details');
+            
+            if (!courseId) {
+                feeDetails.innerHTML = '';
+                return;
+            }
+            
+            feeDetails.innerHTML = '<p class="text-center text-gray-500">Loading fees...</p>';
+            
+            const fees = await fetchFees(courseId);
+            
+            if (!fees) {
+                feeDetails.innerHTML = '<p class="text-center text-red-500">Failed to load fees</p>';
+                return;
+            }
+            
+            feeDetails.innerHTML = `
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">${fees.courseName}</h4>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-gray-600">Tuition Fee (per year):</span>
+                            <span class="font-semibold text-gray-800">${fees.tuitionFee}</span>
+                        </div>
+                        
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-gray-600">Application Fee:</span>
+                            <span class="font-semibold text-gray-800">${fees.applicationFee}</span>
+                        </div>
+                        
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-gray-600">Other Fees (per year):</span>
+                            <span class="font-semibold text-gray-800">${fees.otherFees}</span>
+                        </div>
+                        
+                        <div class="flex justify-between border-b pb-2 bg-yellow-50 p-2 rounded">
+                            <span class="text-gray-700 font-semibold">Total per Year:</span>
+                            <span class="font-bold text-gray-600">${fees.totalPerYear}</span>
+                        </div>
+                        
+                        <div class="flex justify-between bg-gray-50 p-3 rounded">
+                            <span class="text-gray-700 font-semibold">Total Program Cost:</span>
+                            <span class="font-bold text-gray-700 text-xl">${fees.totalProgram}</span>
+                        </div>
+                        
+                        <div class="mt-4 p-3 bg-green-50 rounded border-l-4 border-green-500">
+                            <p class="text-sm text-gray-700">
+                                <strong>Scholarships:</strong> ${fees.scholarships}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('feesModal');
+            if (event.target == modal) {
+                closeFeesModal();
+            }
+        }
+
+        // ========== FORM HANDLER ==========
+        // Load university data on page load
+        async function loadUniversityData() {
+            const university = await fetchUniversity();
+            
+            if (university) {
+                // Update overview
+                document.getElementById('university-overview').textContent = university.overview;
+                
+                // Load placements data
+                loadPlacements(university.placements);
+                
+                // Load facilities
+                loadFacilities(university.facilities);
+            }
+        }
+
+        // Load courses
+        async function loadCourses() {
+            const courses = await fetchCourses();
+            const container = document.getElementById('courses-container');
+            const courseSelect = document.getElementById('course-select');
+            
+            if (courses.length === 0) {
+                container.innerHTML = '<p class="col-span-3 text-center text-red-500">Failed to load courses</p>';
+                return;
+            }
+            
+            // Store courses globally
+            currentCourses = courses;
+            
+            // Display courses as cards
+            container.innerHTML = courses.map(course => `
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">${course.name}</h3>
+                    <p class="text-gray-600 mb-2"><strong>Degree:</strong> ${course.degree}</p>
+                    <p class="text-gray-600 mb-2"><strong>Duration:</strong> ${course.duration}</p>
+                    <p class="text-gray-600"><strong>Eligibility:</strong> ${course.eligibility}</p>
+                </div>
+            `).join('');
+            
+            // Populate course select dropdown in form
+            courseSelect.innerHTML = '<option value="">Select Course</option>' + 
+                courses.map(course => `<option value="${course.name}">${course.name} (${course.degree})</option>`).join('');
+        }
+
+        // Load placements data
+        function loadPlacements(placements) {
+            const container = document.getElementById('placements-container');
+            
+            container.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">${placements.placementRate}</div>
+                    <p class="text-gray-600">Placement Rate</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">${placements.averagePackage}</div>
+                    <p class="text-gray-600">Average Package</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-2">${placements.highestPackage}</div>
+                    <p class="text-gray-600">Highest Package</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="font-bold text-gray-800 mb-2">Top Recruiters</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        ${placements.topRecruiters.map(recruiter => `<li>• ${recruiter}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Load facilities
+        function loadFacilities(facilities) {
+            const container = document.getElementById('facilities-container');
+            
+            container.innerHTML = facilities.map(facility => `
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition">
+                    <div class="text-gray-600 mb-3">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <p class="text-gray-700 font-semibold">${facility}</p>
+                </div>
+            `).join('');
+        }
+
+        // Handle form submission
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            formMessage.classList.add('hidden');
+            
+            // Collect form data
+            const formData = {
+                name: this.name.value,
+                email: this.email.value,
+                phone: this.phone.value,
+                state: this.state.value,
+                course: this.course.value,
+                intakeYear: this.intakeYear.value,
+                consent: this.consent.checked,
+                university: 'MIT',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Validate phone number
+            if (!/^[0-9]{10}$/.test(formData.phone)) {
+                showFormMessage('Please enter a valid 10-digit phone number', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+                return;
+            }
+            
+            // Submit to Pipedream
+            const result = await submitFormToPipedream(formData);
+            
+            if (result.success) {
+                showFormMessage('Application submitted successfully! We will contact you soon.', 'success');
+                this.reset();
+            } else {
+                showFormMessage('Failed to submit application. Please try again.', 'error');
+            }
+            
+            // Re-enable button
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Application';
         });
-        
+
+        // Show form message
+        function showFormMessage(message, type) {
+            const formMessage = document.getElementById('formMessage');
+            
+            formMessage.classList.remove('hidden');
+            formMessage.className = 'mt-4 text-center p-4 rounded-lg ' + 
+                (type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700');
+            formMessage.textContent = message;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Helper functions
         function scrollToForm() {
             document.getElementById('apply-section').scrollIntoView({ behavior: 'smooth' });
         }
@@ -252,6 +560,12 @@
         function downloadBrochure() {
             alert('Brochure download feature coming soon!');
         }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUniversityData();
+            loadCourses();
+        });
     </script>
 </body>
 </html>

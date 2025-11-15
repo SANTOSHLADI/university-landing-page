@@ -13,6 +13,6 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Editor directories
+# Editor directoriess
 .vscode/
 .idea/
