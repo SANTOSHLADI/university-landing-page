@@ -1,5 +1,5 @@
 // API Base URL
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://university-backend-nivs.onrender.com/';
 const UNIVERSITY_ID = 1; // Stanford
 
 // Fetch university data
